@@ -19,6 +19,19 @@ class TestSubnet(unittest.TestCase):
         self.assertListEqual(s.mask_bin, [bin(255), bin(255), bin(255), bin(0)])
         self.assertEqual(s.mask_bin_str, '11111111.11111111.11111111.00000000')
 
+    def test_get_network_address(self):
+        s = Subnet('10.1.1.150', 25)
+        self.assertEqual(s.get_network_address(), '10.1.1.128')
+
+        s = Subnet('10.1.199.50', 18)
+        self.assertEqual(s.get_network_address(), '10.1.192.0')
+        
+        s = Subnet('10.1.1.1', 16)
+        self.assertEqual(s.get_network_address(), '10.1.0.0')
+        
+        s = Subnet('10.1.1.1', 6)
+        self.assertEqual(s.get_network_address(), '8.0.0.0')
+
 
 if __name__ == '__main__':
     unittest.main()

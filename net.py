@@ -9,9 +9,6 @@ class Subnet:
         self.calc_ip_bin()
         self.calc_mask_bin()
 
-        print(self.ip_bin)
-        print(self.mask_bin)
-
     def calc_ip_bin(self):
         ip_segments = self.ip.split(".")
         for segment in ip_segments:
@@ -23,6 +20,23 @@ class Subnet:
         self.mask_bin_str = ".".join(binary_segments)
         for segment in binary_segments:
             self.mask_bin.append(bin(int(segment, 2)))
+
+    def get_network_address(self) -> str:
+        mask_net_idx = 0
+        for i in range(len(self.mask_bin)):
+            if self.mask_bin[i] != bin(255):
+                mask_net_idx = i
+                break
+        
+        mask_net_bits = int(self.mask_bin[mask_net_idx], 2) & int(self.ip_bin[mask_net_idx], 2)
+        network_address_list = [str(int(self.ip_bin[i], 2)) for i in range(len(self.ip_bin)) if i < mask_net_idx ]
+        network_address_list.append(str(mask_net_bits))
+
+        if mask_net_idx < 3:
+            for i in range(3 - mask_net_idx):
+                network_address_list.append('0')
+
+        return '.'.join(network_address_list)
 
     # def get_host_range(self) -> str:
     #     pass
