@@ -31,9 +31,12 @@ class Subnet:
                 break
         
         mask_net_bits = int(self.mask_bin[mask_net_idx], 2) & int(self.ip_bin[mask_net_idx], 2)
+
+        #pulls complete network address segments from ip
         network_address_list = [str(int(self.ip_bin[i], 2)) for i in range(len(self.ip_bin)) if i < mask_net_idx ]
         network_address_list.append(str(mask_net_bits))
 
+        # adds 0 for every remaining address segment
         if mask_net_idx < 3:
             for i in range(3 - mask_net_idx):
                 network_address_list.append('0')
@@ -44,8 +47,11 @@ class Subnet:
         network_address_segments = self.get_network_address().split('.')
         network_bits_segment_count = math.floor(self.mask / 8)
 
+        #pulls complete broadcast address segments from network address
         broadcast_address_list = [network_address_segments[i] for i in range(len(network_address_segments)) if i < network_bits_segment_count]
         network_bits_remaining = self.mask % 8
+        
+        # adds network bits of segment to network address segment to get the final address of segment
         network_broadcast_bits = int(network_address_segments[network_bits_segment_count]) + (1 << (8 - network_bits_remaining)) - 1
         broadcast_address_list.append(str(network_broadcast_bits))
 
