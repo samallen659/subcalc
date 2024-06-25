@@ -1,3 +1,5 @@
+import math
+
 class Subnet:
     def __init__(self, ip: str, mask: int):
         self.ip = ip
@@ -37,6 +39,23 @@ class Subnet:
                 network_address_list.append('0')
 
         return '.'.join(network_address_list)
+
+    def get_broadcast_address(self) -> str:
+        network_address_segments = self.get_network_address().split('.')
+        network_bits_segment_count = math.floor(self.mask / 8)
+
+        broadcast_address_list = [network_address_segments[i] for i in range(len(network_address_segments)) if i < network_bits_segment_count]
+        network_bits_remaining = self.mask % 8
+        network_broadcast_bits = int(network_address_segments[network_bits_segment_count]) + (1 << (8 - network_bits_remaining)) - 1
+        broadcast_address_list.append(str(network_broadcast_bits))
+
+    
+        # adds 255 for every remaining address segment
+        if network_bits_segment_count < 3:
+            for i in range(3 - network_bits_segment_count):
+                broadcast_address_list.append('255')
+
+        return '.'.join(broadcast_address_list)
 
     # def get_host_range(self) -> str:
     #     pass
