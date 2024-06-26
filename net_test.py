@@ -45,5 +45,19 @@ class TestSubnet(unittest.TestCase):
         s = Subnet('10.1.1.1', 6)
         self.assertEqual(s.broadcast_address(), '11.255.255.255')
 
+    def test_number_of_hosts(self):
+        s = Subnet('10.1.1.25', 25)
+        self.assertEqual(s.number_of_hosts(), (128,126))
+
+        s = Subnet('10.1.199.50', 18)
+        self.assertEqual(s.number_of_hosts(), (16_384, 16_382))
+        
+        s = Subnet('10.1.1.1', 16)
+        self.assertEqual(s.number_of_hosts(), (65_536, 65_534))
+        
+        s = Subnet('10.1.1.1', 6)
+        self.assertEqual(s.number_of_hosts(), (67_108_864, 67_108_862))
+
+
 if __name__ == '__main__':
     unittest.main()

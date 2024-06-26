@@ -63,6 +63,11 @@ class Subnet:
 
         return '.'.join(broadcast_address_list)
 
+    def number_of_hosts(self) -> tuple[int, int]:
+        host_count = 1 << (32 - self.mask) 
+
+        return (host_count, host_count - 2)
+
     
 
     # def get_host_range(self) -> str:
