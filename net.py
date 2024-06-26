@@ -85,6 +85,18 @@ class Subnet:
         host_count = 1 << (32 - self.mask) 
 
         return (host_count, host_count - 2)
+    
+    def wildcard_mask(self) -> str:
+        '''
+        Calculates the wildcard mask of the network
+
+        Returns"
+            str: wildcard_mask
+        "
+        '''
+        wildcard_mask_list = [str(255 ^ int(segment, 2)) for segment in self.mask_bin]
+
+        return '.'.join(wildcard_mask_list)
 
     
 

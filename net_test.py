@@ -57,6 +57,20 @@ class TestSubnet(unittest.TestCase):
         
         s = Subnet('10.1.1.1', 6)
         self.assertEqual(s.number_of_hosts(), (67_108_864, 67_108_862))
+    
+    def test_wildcard_mask(self):
+        s = Subnet('10.1.1.25', 25)
+        self.assertEqual(s.wildcard_mask(), "0.0.0.127")
+
+        s = Subnet('10.1.199.50', 18)
+        self.assertEqual(s.wildcard_mask(), "0.0.63.255")
+        
+        s = Subnet('10.1.1.1', 16)
+        self.assertEqual(s.wildcard_mask(), "0.0.255.255")
+        
+        s = Subnet('10.1.1.1', 6)
+        self.assertEqual(s.wildcard_mask(), "3.255.255.255")
+
 
 
 if __name__ == '__main__':
