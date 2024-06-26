@@ -23,7 +23,7 @@ class Subnet:
         for segment in binary_segments:
             self.mask_bin.append(bin(int(segment, 2)))
 
-    def get_network_address(self) -> str:
+    def network_address(self) -> str:
         mask_net_idx = 0
         for i in range(len(self.mask_bin)):
             if self.mask_bin[i] != bin(255):
@@ -43,8 +43,8 @@ class Subnet:
 
         return '.'.join(network_address_list)
 
-    def get_broadcast_address(self) -> str:
-        network_address_segments = self.get_network_address().split('.')
+    def broadcast_address(self) -> str:
+        network_address_segments = self.network_address().split('.')
         network_bits_segment_count = math.floor(self.mask / 8)
 
         #pulls complete broadcast address segments from network address
@@ -62,6 +62,8 @@ class Subnet:
                 broadcast_address_list.append('255')
 
         return '.'.join(broadcast_address_list)
+
+    
 
     # def get_host_range(self) -> str:
     #     pass
