@@ -24,6 +24,12 @@ class Subnet:
             self.mask_bin.append(bin(int(segment, 2)))
 
     def network_address(self) -> str:
+        '''
+        Calculates the network address of the network
+
+        Returns:
+            str: network_address
+        '''
         mask_net_idx = 0
         for i in range(len(self.mask_bin)):
             if self.mask_bin[i] != bin(255):
@@ -44,6 +50,12 @@ class Subnet:
         return '.'.join(network_address_list)
 
     def broadcast_address(self) -> str:
+        '''
+        Calculates the broadcast address of the network
+
+        Returns:
+            str: broadcast_address
+        '''
         network_address_segments = self.network_address().split('.')
         network_bits_segment_count = math.floor(self.mask / 8)
 
@@ -64,6 +76,12 @@ class Subnet:
         return '.'.join(broadcast_address_list)
 
     def number_of_hosts(self) -> tuple[int, int]:
+        '''
+        Calculates the number of hosts and the number of usable hosts in the network
+
+        Returns:
+            tuple[int, int]: (number_of_hosts, number_of_usable_hosts)
+        '''
         host_count = 1 << (32 - self.mask) 
 
         return (host_count, host_count - 2)
