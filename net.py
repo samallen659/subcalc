@@ -24,6 +24,10 @@ class Subnet:
         for segment in binary_segments:
             self.mask_bin.append(bin(int(segment, 2)))
 
+    def subnet_mask(self) -> str:
+        s_mask = [str(int(seg, 2)) for seg in self.mask_bin]
+        return '.'.join(s_mask)
+
     def network_address(self) -> str:
         '''
         Calculates the network address of the network
