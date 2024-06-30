@@ -7,6 +7,7 @@ class Subnet:
         self.ip_bin = []
         self.mask_bin = []
         self.mask_bin_str = ""
+        self.short = f"{ip}/{mask}"
 
         self.calc_ip_bin()
         self.calc_mask_bin()
@@ -90,7 +91,7 @@ class Subnet:
         '''
         Calculates the wildcard mask of the network
 
-        Returns"
+        Returns:
             str: wildcard_mask
         "
         '''
@@ -98,7 +99,20 @@ class Subnet:
 
         return '.'.join(wildcard_mask_list)
 
+    def private_or_public(self) -> str:
+        first_seg = int(self.ip_bin[0], 2)
+        sec_seg = int(self.ip_bin[1], 2)
+        if first_seg == 10:
+            return "private"
+        elif first_seg == 172:
+            if sec_seg >= 16 and sec_seg <= 31:
+                return "private"
+            else:
+                return "public"
+        elif first_seg == 192:
+            if sec_seg == 168:
+                return "private"
+            else:
+                return "public"
+        return "public"
     
-
-    # def get_host_range(self) -> str:
-    #     pass

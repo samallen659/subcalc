@@ -71,6 +71,25 @@ class TestSubnet(unittest.TestCase):
         s = Subnet('10.1.1.1', 6)
         self.assertEqual(s.wildcard_mask(), "3.255.255.255")
 
+    def test_private_or_public(self):
+        s = Subnet('10.0.0.1', 8)
+        self.assertEqual(s.private_or_public(), "private")
+
+        s = Subnet('172.16.0.1', 16)
+        self.assertEqual(s.private_or_public(), "private")
+
+        s = Subnet('172.31.0.1', 24)
+        self.assertEqual(s.private_or_public(), "private")
+
+        s = Subnet('192.168.0.1', 24)
+        self.assertEqual(s.private_or_public(), "private")
+
+        s = Subnet('172.200.0.1', 32)
+        self.assertEqual(s.private_or_public(), "public")
+
+        s = Subnet('8.0.0.0', 8)
+        self.assertEqual(s.private_or_public(), "public")
+
 
 
 if __name__ == '__main__':
