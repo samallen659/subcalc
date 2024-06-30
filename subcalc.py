@@ -34,6 +34,7 @@ def main(ip: Annotated[str, typer.Argument(help="The IP address for calculating 
     table.add_row("Total number of Hosts", str(number_of_hosts[0]))
     table.add_row("Number of Usable Hosts", str(number_of_hosts[1]))
 
+    table.add_row("Subnet Mask", sub.subnet_mask())
     table.add_row("Wildcard Mask", sub.wildcard_mask())
     table.add_row("Binary Subnet Mask", sub.mask_bin_str)
     table.add_row("CIDR Notation", f"/{sub.mask}")
