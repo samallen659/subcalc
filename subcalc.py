@@ -8,8 +8,23 @@ from rich.table import Table
 console = Console()
 app = typer.Typer()
 
+def ipaddress_callback(ip: str):
+    try:
+        ipaddress.ip_address(ip)
+    except:
+        raise typer.BadParameter("Invalid IP address format")
+    return ip
+
+def mask_callback(mask: int):
+    if mask >= 0 and mask <= 32:
+        return mask
+    raise typer.BadParameter("Invalid mask")
+
 @app.command()
 def subnets():
+    '''
+    Print CIDR vs Subnet mask table
+    '''
     table = Table()
     table.add_column("CIDR", justify="left")
     table.add_column("Mask", justify="left")
@@ -49,21 +64,12 @@ def subnets():
 
     console.print(table)
 
-def ipaddress_callback(ip: str):
-    try:
-        ipaddress.ip_address(ip)
-    except:
-        raise typer.BadParameter("Invalid IP address format")
-    return ip
-
-def mask_callback(mask: int):
-    if mask >= 0 and mask <= 32:
-        return mask
-    raise typer.BadParameter("Invalid mask")
-
 @app.command()
 def main(ip: Annotated[str, typer.Argument(help="The IP address for calculating the subnet", callback=ipaddress_callback)],
          mask: Annotated[int, typer.Argument(help="The mask for calculating the subnet. Must be CIDR format", callback=mask_callback)]):
+    '''
+    Print details of Subnet
+    '''
     sub = Subnet(ip, mask)
 
     table = Table()
@@ -72,7 +78,7 @@ def main(ip: Annotated[str, typer.Argument(help="The IP address for calculating 
 
     table.add_row("Network Address", sub.network_address())
     table.add_row("Broadcast Address", sub.broadcast_address())
-    
+
     number_of_hosts = sub.number_of_hosts()
     table.add_row("Total number of Hosts", str(number_of_hosts[0]))
     table.add_row("Number of Usable Hosts", str(number_of_hosts[1]))
@@ -86,8 +92,5 @@ def main(ip: Annotated[str, typer.Argument(help="The IP address for calculating 
 
     console.print(table)
 
-    
-
 if __name__ == "__main__":
     app()
-    # typer.run(main)
