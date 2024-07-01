@@ -21,7 +21,7 @@ def mask_callback(mask: int):
     raise typer.BadParameter("Invalid mask")
 
 @app.command()
-def subnets():
+def mask():
     '''
     Print CIDR vs Subnet mask table
     '''
@@ -65,7 +65,7 @@ def subnets():
     console.print(table)
 
 @app.command()
-def main(ip: Annotated[str, typer.Argument(help="The IP address for calculating the subnet", callback=ipaddress_callback)],
+def subnet(ip: Annotated[str, typer.Argument(help="The IP address for calculating the subnet", callback=ipaddress_callback)],
          mask: Annotated[int, typer.Argument(help="The mask for calculating the subnet. Must be CIDR format", callback=mask_callback)]):
     '''
     Print details of Subnet
