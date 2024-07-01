@@ -119,4 +119,3 @@ class Subnet:
             else:
                 return "public"
         return "public"
-    
