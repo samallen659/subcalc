@@ -4,6 +4,7 @@ import typer
 import ipaddress
 from rich.console import Console
 from rich.table import Table
+from rich import box
 
 console = Console()
 app = typer.Typer()
@@ -25,7 +26,7 @@ def mask():
     '''
     Print CIDR vs Subnet mask table
     '''
-    table = Table()
+    table = Table(box=box.ROUNDED)
     table.add_column("CIDR", justify="left")
     table.add_column("Mask", justify="left")
 
@@ -72,7 +73,7 @@ def subnet(ip: Annotated[str, typer.Argument(help="The IP address for calculatin
     '''
     sub = Subnet(ip, mask)
 
-    table = Table()
+    table = Table(box=box.ROUNDED)
     table.add_column("IP Address", justify="left")
     table.add_column(f"{sub.ip}",justify="left")
 
